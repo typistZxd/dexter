@@ -30,6 +30,11 @@ const PROVIDERS: Provider[] = [
     models: ['grok-4-0709', 'grok-4-1-fast-reasoning'],
   },
   {
+    displayName: 'Kimi',
+    providerId: 'kimi',
+    models: ['kimi-k2.5'],
+  },
+  {
     displayName: 'Ollama',
     providerId: 'ollama',
     models: [], // Populated dynamically from local Ollama API

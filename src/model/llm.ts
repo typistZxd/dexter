@@ -78,6 +78,15 @@ const MODEL_PROVIDERS: Record<string, ModelFactory> = {
         baseURL: 'https://api.x.ai/v1',
       },
     }),
+  'kimi-': (name, opts) =>
+    new ChatOpenAI({
+      model: name,
+      ...opts,
+      apiKey: getApiKey('MOONSHOT_API_KEY', 'Kimi'),
+      configuration: {
+        baseURL: 'https://api.moonshot.cn/v1',
+      },
+    }),
   'ollama:': (name, opts) =>
     new ChatOllama({
       model: name.replace(/^ollama:/, ''),

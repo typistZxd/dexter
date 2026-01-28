@@ -1,113 +1,122 @@
+<!--
+文档版本: 1.0.0
+最后更新: 2026-01-25
+适用代码版本: 3.0.2
+-->
+
 # Dexter 🤖
 
-Dexter is an autonomous financial research agent that thinks, plans, and learns as it works. It performs analysis using task planning, self-reflection, and real-time market data. Think Claude Code, but built specifically for financial research.
+**Dexter 是一个自主金融研究代理**，能够像专业分析师一样思考、规划和执行金融研究任务。它将复杂的金融问题分解为结构化的研究步骤，自动获取实时市场数据，并生成数据驱动的研究报告。
 
+<img width="1098" alt="Dexter CLI 界面" src="https://github.com/user-attachments/assets/3bcc3a7f-b68a-4f5e-8735-9d22196ff76e" />
 
-<img width="1098" height="659" alt="Screenshot 2026-01-21 at 5 25 10 PM" src="https://github.com/user-attachments/assets/3bcc3a7f-b68a-4f5e-8735-9d22196ff76e" />
+---
 
+## 核心能力
 
-## Overview
+| 能力 | 说明 |
+|------|------|
+| 🧠 **智能任务规划** | 自动将复杂查询分解为结构化的研究步骤 |
+| 🔧 **自主执行** | 选择并调用正确的工具来获取金融数据 |
+| 🔄 **自我验证** | 检查自身工作，迭代优化直到任务完成 |
+| 📊 **实时数据** | 访问收入报表、资产负债表、现金流量表等财务数据 |
+| 🛡️ **安全机制** | 内置循环检测和步骤限制，防止失控执行 |
 
-Dexter takes complex financial questions and turns them into clear, step-by-step research plans. It runs those tasks using live market data, checks its own work, and refines the results until it has a confident, data-backed answer.  
+## 适用场景
 
-**Key Capabilities:**
-- **Intelligent Task Planning**: Automatically decomposes complex queries into structured research steps
-- **Autonomous Execution**: Selects and executes the right tools to gather financial data
-- **Self-Validation**: Checks its own work and iterates until tasks are complete
-- **Real-Time Financial Data**: Access to income statements, balance sheets, and cash flow statements
-- **Safety Features**: Built-in loop detection and step limits to prevent runaway execution
+- **金融数据分析**: 快速获取和分析上市公司财务数据
+- **市场研究**: 结合财务数据和网络信息进行综合研究
+- **投资决策支持**: 基于实时数据生成分析报告
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/virattt?style=social)](https://twitter.com/virattt)
+<img width="875" alt="Dexter 工作流程" src="https://github.com/user-attachments/assets/72d28363-69ea-4c74-a297-dfa60aa347f7" />
 
-<img width="875" height="558" alt="Screenshot 2026-01-21 at 5 22 19 PM" src="https://github.com/user-attachments/assets/72d28363-69ea-4c74-a297-dfa60aa347f7" />
+---
 
+## 快速开始
 
-### Prerequisites
+### 前置条件
 
-- [Bun](https://bun.com) runtime (v1.0 or higher)
-- OpenAI API key (get [here](https://platform.openai.com/api-keys))
-- Financial Datasets API key (get [here](https://financialdatasets.ai))
-- Exa API key (get [here](https://exa.ai)) - optional, for web search (preferred)
-- Tavily API key (get [here](https://tavily.com)) - optional, fallback web search
+- [Bun](https://bun.sh) 运行时 (v1.0+)
+- [OpenAI API Key](https://platform.openai.com/api-keys)
+- [Financial Datasets API Key](https://financialdatasets.ai)
 
-#### Installing Bun
+### 安装
 
-If you don't have Bun installed, you can install it using curl:
-
-**macOS/Linux:**
 ```bash
-curl -fsSL https://bun.com/install | bash
-```
-
-**Windows:**
-```bash
-powershell -c "irm bun.sh/install.ps1|iex"
-```
-
-After installation, restart your terminal and verify Bun is installed:
-```bash
-bun --version
-```
-
-### Installing Dexter
-
-1. Clone the repository:
-```bash
+# 1. 克隆仓库
 git clone https://github.com/virattt/dexter.git
 cd dexter
-```
 
-2. Install dependencies with Bun:
-```bash
+# 2. 安装依赖
 bun install
-```
 
-3. Set up your environment variables:
-```bash
-# Copy the example environment file
+# 3. 配置环境变量
 cp env.example .env
-
-# Edit .env and add your API keys (if using cloud providers)
-# OPENAI_API_KEY=your-openai-api-key
-# ANTHROPIC_API_KEY=your-anthropic-api-key
-# GOOGLE_API_KEY=your-google-api-key
-# XAI_API_KEY=your-xai-api-key
-
-# (Optional) If using Ollama locally
-# OLLAMA_BASE_URL=http://127.0.0.1:11434
-
-# Other required keys
-# FINANCIAL_DATASETS_API_KEY=your-financial-datasets-api-key
-
-# Web Search (Exa preferred, Tavily fallback)
-# EXASEARCH_API_KEY=your-exa-api-key
-# TAVILY_API_KEY=your-tavily-api-key
+# 编辑 .env 文件，填入你的 API Key
 ```
 
-### Usage
+### 运行
 
-Run Dexter in interactive mode:
 ```bash
+# 生产模式
 bun start
-```
 
-Or with watch mode for development:
-```bash
+# 开发模式（支持热重载）
 bun dev
 ```
 
-## How to Contribute
+启动后，输入你的金融研究问题，Dexter 将自动规划和执行研究任务。
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+> 📖 **详细安装指南**: 如需了解更多配置选项（如使用本地模型、配置其他 LLM 提供商），请查看 [安装与配置指南](./docs/getting-started.md)
 
-**Important**: Please keep your pull requests small and focused.  This will make it easier to review and merge.
+---
 
+## 文档导航
 
-## License
+| 文档 | 内容 |
+|------|------|
+| [安装与配置指南](./docs/getting-started.md) | 完整的环境配置、多平台安装、本地模型使用、常见问题 |
+| [架构与核心模块](./docs/architecture.md) | 项目结构、技术栈、Agent/Tools/Components/Hooks 模块详解 |
+| [贡献指南](./docs/contributing.md) | 开发流程、代码规范、PR 提交、代码审查 |
 
-This project is licensed under the MIT License.
+---
 
+## 技术栈
+
+| 组件 | 技术 |
+|------|------|
+| 运行时 | Bun |
+| 语言 | TypeScript |
+| UI 框架 | React + Ink |
+| AI 框架 | LangChain |
+| 验证 | Zod |
+
+---
+
+## 贡献
+
+我们欢迎社区贡献！
+
+1. Fork 仓库
+2. 创建功能分支
+3. 提交你的变更
+4. 推送到分支
+5. 创建 Pull Request
+
+**重要**: 请保持 PR 小而聚焦，这将使代码审查更加高效。
+
+> 📖 **详细贡献指南**: 请查看 [贡献指南](./docs/contributing.md) 了解完整的开发流程和代码规范。
+
+---
+
+## 支持
+
+- 📣 关注 Twitter: [![Twitter Follow](https://img.shields.io/twitter/follow/virattt?style=social)](https://twitter.com/virattt)
+- 💬 问题讨论: [GitHub Discussions](https://github.com/virattt/dexter/discussions)
+- 🐛 Bug 报告: [GitHub Issues](https://github.com/virattt/dexter/issues)
+
+---
+
+## 许可证
+
+本项目采用 MIT 许可证。
