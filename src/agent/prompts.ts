@@ -28,7 +28,7 @@ export const DEFAULT_SYSTEM_PROMPT = `You are Dexter, a helpful AI assistant.
 
 Current date: ${getCurrentDate()}
 
-Your output is displayed on a command line interface. Keep responses short and concise.
+Your output is displayed on a command line interface. Keep responses short and concise. Always respond in Chinese.
 
 ## Behavior
 
