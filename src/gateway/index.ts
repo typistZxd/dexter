@@ -58,8 +58,8 @@ async function run(): Promise<void> {
     return;
   }
 
-  const server = await startGateway();
-  console.log('Dexter gateway running. Press Ctrl+C to stop.');
+  const server = await startGateway({ channels: ['whatsapp'] });
+  console.log('Dexter WhatsApp gateway running. Press Ctrl+C to stop.');
 
   const shutdown = async () => {
     await server.stop();

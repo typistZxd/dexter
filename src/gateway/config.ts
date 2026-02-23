@@ -26,6 +26,15 @@ const WhatsAppAccountSchema = z.object({
   sendReadReceipts: z.boolean().optional().default(true),
 });
 
+const LarkAccountSchema = z.object({
+  name: z.string().optional(),
+  enabled: z.boolean().optional().default(true),
+  appId: z.string(),
+  appSecret: z.string(),
+  encryptKey: z.string().optional(),
+  verificationToken: z.string().optional(),
+});
+
 const GatewayConfigSchema = z.object({
   gateway: z
     .object({
@@ -42,6 +51,12 @@ const GatewayConfigSchema = z.object({
           enabled: z.boolean().optional(),
           accounts: z.record(z.string(), WhatsAppAccountSchema).optional(),
           allowFrom: z.array(z.string()).optional(),
+        })
+        .optional(),
+      lark: z
+        .object({
+          enabled: z.boolean().optional(),
+          accounts: z.record(z.string(), LarkAccountSchema).optional(),
         })
         .optional(),
     })
@@ -81,6 +96,10 @@ export type GatewayConfig = {
       accounts: Record<string, z.infer<typeof WhatsAppAccountSchema>>;
       allowFrom: string[];
     };
+    lark: {
+      enabled: boolean;
+      accounts: Record<string, LarkAccountConfig>;
+    };
   };
   bindings: Array<{
     agentId: string;
@@ -91,6 +110,16 @@ export type GatewayConfig = {
       peerKind?: 'direct' | 'group';
     };
   }>;
+};
+
+export type LarkAccountConfig = {
+  accountId: string;
+  name?: string;
+  enabled: boolean;
+  appId: string;
+  appSecret: string;
+  encryptKey?: string;
+  verificationToken?: string;
 };
 export type WhatsAppAccountConfig = {
   accountId: string;
@@ -113,7 +142,10 @@ export function loadGatewayConfig(overridePath?: string): GatewayConfig {
   if (!existsSync(path)) {
     return {
       gateway: { accountId: 'default', logLevel: 'info' },
-      channels: { whatsapp: { enabled: true, accounts: {}, allowFrom: [] } },
+      channels: {
+        whatsapp: { enabled: true, accounts: {}, allowFrom: [] },
+        lark: { enabled: false, accounts: {} },
+      },
       bindings: [],
     };
   }
@@ -133,9 +165,31 @@ export function loadGatewayConfig(overridePath?: string): GatewayConfig {
         accounts: parsed.channels?.whatsapp?.accounts ?? {},
         allowFrom: parsed.channels?.whatsapp?.allowFrom ?? [],
       },
+      lark: {
+        enabled: parsed.channels?.lark?.enabled ?? false,
+        accounts: resolveLarkAccounts(parsed.channels?.lark?.accounts ?? {}),
+      },
     },
     bindings: parsed.bindings ?? [],
   };
+}
+
+function resolveLarkAccounts(
+  raw: Record<string, z.infer<typeof LarkAccountSchema>>,
+): Record<string, LarkAccountConfig> {
+  const result: Record<string, LarkAccountConfig> = {};
+  for (const [id, account] of Object.entries(raw)) {
+    result[id] = {
+      accountId: id,
+      name: account.name,
+      enabled: account.enabled ?? true,
+      appId: account.appId,
+      appSecret: account.appSecret,
+      encryptKey: account.encryptKey,
+      verificationToken: account.verificationToken,
+    };
+  }
+  return result;
 }
 
 export function saveGatewayConfig(config: GatewayConfig, overridePath?: string): void {
@@ -145,6 +199,23 @@ export function saveGatewayConfig(config: GatewayConfig, overridePath?: string):
     mkdirSync(dir, { recursive: true });
   }
   writeFileSync(path, JSON.stringify(config, null, 2), 'utf8');
+}
+
+export function listLarkAccountIds(cfg: GatewayConfig): string[] {
+  const accounts = cfg.channels.lark.accounts ?? {};
+  const ids = Object.keys(accounts);
+  return ids.length > 0 ? ids : [];
+}
+
+export function resolveLarkAccount(
+  cfg: GatewayConfig,
+  accountId: string,
+): LarkAccountConfig {
+  const account = cfg.channels.lark.accounts?.[accountId];
+  if (!account) {
+    throw new Error(`Lark account "${accountId}" not found in config`);
+  }
+  return account;
 }
 
 export function listWhatsAppAccountIds(cfg: GatewayConfig): string[] {
